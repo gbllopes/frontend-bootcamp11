@@ -3,3 +3,4 @@ const soma = (a, b) => {
 };
 
 console.log(soma(1, 3));
+
