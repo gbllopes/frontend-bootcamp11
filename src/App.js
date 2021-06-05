@@ -26,12 +26,27 @@ function App() {
     setProjects([...projects, project]);
   }
 
+  async function handleDeleteProject(projectId) {
+    const response = await api.delete(`/projects/${projectId}`);
+
+    if (response.status == 204) {
+      setProjects([
+        ...projects.filter((project) => project.id !== projectId),
+      ]);
+    }
+  }
+
   return (
     <>
       <Header title="Projects" />
       <ul>
         {projects.map((project) => (
-          <li key={project.id}>{project.title}</li>
+          <li key={project.id}>
+            {project.title}
+            <button onClick={() => handleDeleteProject(project.id)}>
+              Deletar
+            </button>
+          </li>
         ))}
       </ul>
 
