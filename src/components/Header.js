@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Children } from "react";
 
-export default function Header(props) {
+export default function Header({ name, children }) {
   return (
     <header>
-      <h1>{props.name}</h1>
+      <h1>{name}</h1>
+      {children}
     </header>
   );
 }
