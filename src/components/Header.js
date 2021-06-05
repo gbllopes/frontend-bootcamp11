@@ -1,9 +1,9 @@
-import React, { Children } from "react";
+import React from "react";
 
-export default function Header({ name, children }) {
+export default function Header({ title, children }) {
   return (
     <header>
-      <h1>{name}</h1>
+      <h1>{title}</h1>
       {children}
     </header>
   );
