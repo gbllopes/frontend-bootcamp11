@@ -6,6 +6,7 @@ import "./App.css";
 import api from "./services/api";
 
 function App() {
+  const [contador, setContador] = useState(1);
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -13,6 +14,16 @@ function App() {
       setProjects(response.data);
     });
   }, []);
+
+  async function handleEditProject(project) {
+    setContador(contador + 1);
+    project.title = `${project.title} ${contador}`;
+    const response = api.put(`/projects/${project.id}`, project);
+
+    projects.slice(projects, 1, response.data);
+    
+    setProjects([...projects]);
+  }
 
   async function handleAddProject() {
     // setProjects([...projects, `Novo projeto ${Date.now()}`]);
@@ -30,9 +41,7 @@ function App() {
     const response = await api.delete(`/projects/${projectId}`);
 
     if (response.status === 204) {
-      setProjects([
-        ...projects.filter((project) => project.id !== projectId),
-      ]);
+      setProjects([...projects.filter((project) => project.id !== projectId)]);
     }
   }
 
@@ -46,6 +55,8 @@ function App() {
             <button onClick={() => handleDeleteProject(project.id)}>
               Deletar
             </button>
+
+            <button onClick={() => handleEditProject(project)}> Editar </button>
           </li>
         ))}
       </ul>
