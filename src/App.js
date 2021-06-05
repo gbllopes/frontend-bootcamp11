@@ -29,7 +29,7 @@ function App() {
   async function handleDeleteProject(projectId) {
     const response = await api.delete(`/projects/${projectId}`);
 
-    if (response.status == 204) {
+    if (response.status === 204) {
       setProjects([
         ...projects.filter((project) => project.id !== projectId),
       ]);
