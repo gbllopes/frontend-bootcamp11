@@ -44,7 +44,7 @@ function App() {
       setProjects([...projects.filter((project) => project.id !== projectId)]);
     }
   }
-
+  //linux
   return (
     <>
       <Header title="Projects" />
