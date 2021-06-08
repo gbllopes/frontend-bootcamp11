@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
+import UserList from "./components/UserList";
 
 import "./App.css";
 
 import api from "./services/api";
 
 function App() {
-  const [contador, setContador] = useState(1);
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    api.get("/projects").then((response) => {
-      setProjects(response.data);
-    });
-  }, []);
+  const [formAction, setActionForm] = useState({ action: "Add" });
 
   async function handleEditProject(project) {
     setContador(contador + 1);
@@ -30,8 +24,8 @@ function App() {
     updatedProjects.splice(0, 1, response.data);
 
     console.log(updatedProjects);
-    console.log(projects, 'projects'); 
-    console.log(updatedProjects, 'updated'); 
+    console.log(projects, "projects");
+    console.log(updatedProjects, "updated");
     if (response.status == 200) {
       setProjects([...projects, ...updatedProjects]);
     }
@@ -59,20 +53,9 @@ function App() {
 
   return (
     <>
-      <Header title="Projects" />
-      <ul>
-        {projects.map((project) => (
-          <li key={project.id}>
-            {project.title}
-            <button onClick={() => handleDeleteProject(project.id)}>
-              Deletar
-            </button>
-
-            <button onClick={() => handleEditProject(project)}> Editar </button>
-          </li>
-        ))}
-      </ul>
-
+      <h1>CRUD utilizando React Hooks</h1>
+      <Header title={`${formAction.action} user`} />
+      <UserList />
       <button type="button" onClick={handleAddProject}>
         Adicionar Projeto
       </button>
