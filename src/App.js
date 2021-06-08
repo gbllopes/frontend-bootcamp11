@@ -17,12 +17,24 @@ function App() {
 
   async function handleEditProject(project) {
     setContador(contador + 1);
-    project.title = `${project.title} ${contador}`;
-    const response = api.put(`/projects/${project.id}`, project);
 
-    projects.slice(projects, 1, response.data);
-    
-    setProjects([...projects]);
+    const updatedProject = {
+      ...project,
+      title: `${contador}`,
+    };
+
+    const response = await api.put(`/projects/${project.id}`, updatedProject);
+
+    const updatedProjects = [...projects];
+    console.log(updatedProjects);
+    updatedProjects.splice(0, 1, response.data);
+
+    console.log(updatedProjects);
+    console.log(projects, 'projects'); 
+    console.log(updatedProjects, 'updated'); 
+    if (response.status == 200) {
+      setProjects([...projects, ...updatedProjects]);
+    }
   }
 
   async function handleAddProject() {
@@ -44,7 +56,7 @@ function App() {
       setProjects([...projects.filter((project) => project.id !== projectId)]);
     }
   }
-  //linux
+
   return (
     <>
       <Header title="Projects" />
