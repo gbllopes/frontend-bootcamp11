@@ -5,6 +5,8 @@ import UserList from "./components/UserList";
 import "./App.css";
 
 import api from "./services/api";
+import Form from "./components/Form";
+
 
 function App() {
   const [formAction, setActionForm] = useState({ action: "Add" });
@@ -20,27 +22,10 @@ function App() {
     const response = await api.put(`/projects/${project.id}`, updatedProject);
 
     const updatedProjects = [...projects];
-    console.log(updatedProjects);
     updatedProjects.splice(0, 1, response.data);
-
-    console.log(updatedProjects);
-    console.log(projects, "projects");
-    console.log(updatedProjects, "updated");
     if (response.status == 200) {
       setProjects([...projects, ...updatedProjects]);
     }
-  }
-
-  async function handleAddProject() {
-    // setProjects([...projects, `Novo projeto ${Date.now()}`]);
-    const response = await api.post("/projects", {
-      title: `React Post ${Date.now()}`,
-      owner: "Gabriel Lopes",
-    });
-
-    const project = response.data;
-
-    setProjects([...projects, project]);
   }
 
   async function handleDeleteProject(projectId) {
@@ -53,12 +38,14 @@ function App() {
 
   return (
     <>
-      <h1>CRUD utilizando React Hooks</h1>
+    <div style={{margin: '0 auto'}}>
+    <h1>CRUD utilizando React Hooks</h1>
       <Header title={`${formAction.action} user`} />
-      <UserList />
-      <button type="button" onClick={handleAddProject}>
-        Adicionar Projeto
-      </button>
+      <div style={{ display: "flex" }}>
+        <Form action={formAction.action}/>
+        <UserList />
+      </div>
+    </div>
     </>
   );
 }
