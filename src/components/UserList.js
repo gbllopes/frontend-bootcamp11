@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-import api from "../services/api";
+import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
@@ -11,10 +9,9 @@ import { TableHead } from "@material-ui/core";
 import { TableRow } from "@material-ui/core";
 import { TableCell } from "@material-ui/core";
 import { TableBody } from "@material-ui/core";
+import { useProjects } from "../contexts/ProjectsContext";
 
 const UserList = () => {
-  const [projectsList, setProjects] = useState([]);
-
   const useStyles = makeStyles({
     table: {
       maxWidth: 600,
@@ -26,13 +23,9 @@ const UserList = () => {
     },
   });
 
-  useEffect(() => {
-    api.get("/projects").then((response) => {
-      setProjects(response.data);
-    });
-  }, []);
-
   const classes = useStyles();
+
+  const {projects} = useProjects();
 
   return (
     <>
@@ -50,7 +43,7 @@ const UserList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {projectsList.map((project) => (
+            {projects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell component="th" scope="row">
                   {project.title}
@@ -70,28 +63,6 @@ const UserList = () => {
         </Table>
       </TableContainer>
     </>
-
-    /* <table style={{ border: "3px solid rgb(0, 0, 0)" }}>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Owner</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projectsList.map((project) => (
-            <tr key={project.id}>
-              <td>{project.title}</td>
-              <td>{project.owner}</td>
-              <td>
-                <Button variant="contained" color="primary">Edit</Button>
-                <Button variant="contained" color="secondary">Remove</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */
   );
 };
 

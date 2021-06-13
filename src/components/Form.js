@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import api from "../services/api";
 
 const Form = ({ action }) => {
-  const [ project, setProject ] = useState({ title: "", owner: "" });
+  const [project, setProject] = useState({ title: "", owner: "" });
 
   const displayGrid = {
     display: "grid",
@@ -12,20 +13,13 @@ const Form = ({ action }) => {
     margin: "5px 10px 0px 0px",
   };
 
-  async function handleAddProject() {
-    const response = await api.post("/projects", {
-      title: `React Post ${Date.now()}`,
-      owner: "Gabriel Lopes",
-    });
-
-    const project = response.data;
-
-    setProject([...projects, project]);
-  }
-
-  function handleProject(e) {
-    console.log(e.target.value);
-  }
+  const handleProject = (e) => {
+    const { id, value } = e.target;
+    setProject((project) => ({
+      ...project,
+      [id]: value,
+    }));
+  };
 
   return (
     <>
@@ -38,9 +32,8 @@ const Form = ({ action }) => {
             type="text"
             id="title"
             height="10px"
-            onChange={(e) => handleProject}
+            onChange={handleProject}
             value={project.title}
-            
           />
         </div>
 
@@ -48,14 +41,17 @@ const Form = ({ action }) => {
           <label htmlFor="owner">
             <h2>Owner</h2>
           </label>
-          <input type="text" id="owner" />
+          <input
+            type="text"
+            id="owner"
+            onChange={handleProject}
+            value={project.owner}
+          />
         </div>
         <div>
           <button
-            type="button"
-            onClick={() => {
-              handleAddProject;
-            }}
+            type="submit"
+            onClick={handleAddProject}
             style={marginButton}
           >{`${action} user`}</button>
           <button type="button" style={marginButton}>
