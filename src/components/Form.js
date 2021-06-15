@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import api from "../services/api";
+import { useProjectsForm } from "../contexts/ProjectsContext";
 
-const Form = ({ action }) => {
-  const [project, setProject] = useState({ title: "", owner: "" });
+const Form = ({ action, onChange }) => {
+  const initialState = {
+    title: "",
+    owner: "",
+  };
+  const [project, setProject] = useState(initialState);
+
+  const { handleAddProject, handleEditProject } = useProjectsForm();
 
   const displayGrid = {
     display: "grid",
     marginRight: "10px",
+    maxHeight: "130px",
   };
 
   const marginButton = {
@@ -21,6 +28,37 @@ const Form = ({ action }) => {
     }));
   };
 
+  const handleActionForm = () => {
+    onChange("Add");
+  };
+
+  function cancelButton() {
+    if (action === "Edit") {
+      return (
+        <button type="button" style={marginButton} onClick={handleActionForm}>
+          Cancel
+        </button>
+      );
+    }
+  }
+
+  function actionButton() {
+    return (
+      <button
+        type="submit"
+        onClick={() =>
+          `${
+            action === "Add"
+              ? handleAddProject(project).then(setProject(initialState))
+              : handleEditProject(project).then(setProject(initialState))
+          }`
+        }
+        style={marginButton}
+      >
+        {`${action} user`}
+      </button>
+    );
+  }
   return (
     <>
       <div style={displayGrid}>
@@ -49,14 +87,8 @@ const Form = ({ action }) => {
           />
         </div>
         <div>
-          <button
-            type="submit"
-            onClick={handleAddProject}
-            style={marginButton}
-          >{`${action} user`}</button>
-          <button type="button" style={marginButton}>
-            Cancel
-          </button>
+          {actionButton()}
+          {cancelButton()}
         </div>
       </div>
     </>

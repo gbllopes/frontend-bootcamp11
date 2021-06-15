@@ -11,7 +11,7 @@ import { TableCell } from "@material-ui/core";
 import { TableBody } from "@material-ui/core";
 import { useProjects } from "../contexts/ProjectsContext";
 
-const UserList = () => {
+const UserList = ({ onChange }) => {
   const useStyles = makeStyles({
     table: {
       maxWidth: 600,
@@ -23,9 +23,12 @@ const UserList = () => {
     },
   });
 
+  const handleActionForm = () => {
+    onChange("Edit");
+  };
   const classes = useStyles();
 
-  const {projects} = useProjects();
+  const { projects, handleDeleteProject } = useProjects();
 
   return (
     <>
@@ -50,10 +53,19 @@ const UserList = () => {
                 </TableCell>
                 <TableCell align="left">{project.owner}</TableCell>
                 <TableCell align="left">
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleActionForm}
+                  >
                     Edit
                   </Button>
-                  <Button variant="contained" color="secondary">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleDeleteProject(project.id)}
+                    style={{marginLeft: '10px'}}
+                  >
                     Remove
                   </Button>
                 </TableCell>

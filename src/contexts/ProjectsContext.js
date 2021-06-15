@@ -6,12 +6,12 @@ export const ProjectsContext = createContext();
 const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
 
-  const handleAddProject = async () => {
+  const handleAddProject = async (project) => {
     const response = await api.post("/projects", project);
 
     const newProject = response.data;
 
-    setProject([...projects, newProject]);
+    setProjects([...projects, newProject]);
   };
 
   async function handleEditProject(project) {
@@ -62,7 +62,13 @@ const ProjectsProvider = ({ children }) => {
 export default ProjectsProvider;
 
 export function useProjects() {
-  const { projects } = useContext(ProjectsContext);
+  const { projects, handleDeleteProject } = useContext(ProjectsContext);
 
-  return { projects };
+  return { projects, handleDeleteProject };
 }
+
+export function useProjectsForm() {
+    const { handleAddProject, handleEditProject} = useContext(ProjectsContext);
+  
+    return { handleAddProject, handleEditProject};
+  }
