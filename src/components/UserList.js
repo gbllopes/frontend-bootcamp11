@@ -9,7 +9,7 @@ import { TableHead } from "@material-ui/core";
 import { TableRow } from "@material-ui/core";
 import { TableCell } from "@material-ui/core";
 import { TableBody } from "@material-ui/core";
-import { useProjects } from "../contexts/ProjectsContext";
+import { useManageProject, useProjects } from "../contexts/ProjectsContext";
 
 const UserList = ({ onChange }) => {
   const useStyles = makeStyles({
@@ -29,6 +29,12 @@ const UserList = ({ onChange }) => {
   const classes = useStyles();
 
   const { projects, handleDeleteProject } = useProjects();
+  const { manageProject } = useManageProject();
+
+  const handleSendProjectToEdit = (project) => {
+    handleActionForm();
+    manageProject(project);
+  };
 
   return (
     <>
@@ -56,7 +62,7 @@ const UserList = ({ onChange }) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleActionForm}
+                    onClick={() => handleSendProjectToEdit(project)}
                   >
                     Edit
                   </Button>
@@ -64,7 +70,7 @@ const UserList = ({ onChange }) => {
                     variant="contained"
                     color="secondary"
                     onClick={() => handleDeleteProject(project.id)}
-                    style={{marginLeft: '10px'}}
+                    style={{ marginLeft: "10px" }}
                   >
                     Remove
                   </Button>

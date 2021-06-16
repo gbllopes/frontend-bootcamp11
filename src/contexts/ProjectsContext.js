@@ -6,6 +6,15 @@ export const ProjectsContext = createContext();
 const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
 
+  const [project, setProject] = useState({
+    title: "",
+    owner: "",
+  });
+
+  const manageProject = (project) => {
+    setProject(project);
+  };
+
   const handleAddProject = async (project) => {
     const response = await api.post("/projects", project);
 
@@ -14,20 +23,19 @@ const ProjectsProvider = ({ children }) => {
     setProjects([...projects, newProject]);
   };
 
-  async function handleEditProject(project) {
-    setContador(contador + 1);
+  async function handleEditProject(projectEdited) {
+    const response = await api.put(`/projects/${project.id}`, projectEdited);
 
-    const updatedProject = {
-      ...project,
-      title: `${contador}`,
-    };
+    const projectsUpdated = projects.map((project) => {
+      if (project.id === response.data.id) {
+        return projectEdited;
+      } else {
+        return project;
+      }
+    });
 
-    const response = await api.put(`/projects/${project.id}`, updatedProject);
-
-    const updatedProjects = [...projects];
-    updatedProjects.splice(0, 1, response.data);
     if (response.status == 200) {
-      setProjects([...projects, ...updatedProjects]);
+      setProjects(projectsUpdated);
     }
   }
 
@@ -48,10 +56,12 @@ const ProjectsProvider = ({ children }) => {
   return (
     <ProjectsContext.Provider
       value={{
+        project,
         projects,
         handleAddProject,
         handleEditProject,
         handleDeleteProject,
+        manageProject,
       }}
     >
       {children}
@@ -68,7 +78,12 @@ export function useProjects() {
 }
 
 export function useProjectsForm() {
-    const { handleAddProject, handleEditProject} = useContext(ProjectsContext);
-  
-    return { handleAddProject, handleEditProject};
-  }
+  const { handleAddProject, handleEditProject } = useContext(ProjectsContext);
+
+  return { handleAddProject, handleEditProject };
+}
+
+export function useManageProject() {
+  const { project, manageProject } = useContext(ProjectsContext);
+  return { project, manageProject };
+}

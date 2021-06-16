@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { useProjectsForm } from "../contexts/ProjectsContext";
+import React from "react";
+import { useManageProject, useProjectsForm } from "../contexts/ProjectsContext";
 
 const Form = ({ action, onChange }) => {
   const initialState = {
     title: "",
     owner: "",
   };
-  const [project, setProject] = useState(initialState);
 
   const { handleAddProject, handleEditProject } = useProjectsForm();
 
@@ -20,15 +19,18 @@ const Form = ({ action, onChange }) => {
     margin: "5px 10px 0px 0px",
   };
 
+  const { project, manageProject } = useManageProject();
+
   const handleProject = (e) => {
     const { id, value } = e.target;
-    setProject((project) => ({
+
+    manageProject({
       ...project,
       [id]: value,
-    }));
+    });
   };
 
-  const handleActionForm = () => {
+  const handleActionForm = async () => {
     onChange("Add");
   };
 
@@ -49,8 +51,8 @@ const Form = ({ action, onChange }) => {
         onClick={() =>
           `${
             action === "Add"
-              ? handleAddProject(project).then(setProject(initialState))
-              : handleEditProject(project).then(setProject(initialState))
+              ? handleAddProject(project).then(manageProject(initialState))
+              : handleEditProject(project).then(manageProject(initialState), handleActionForm())
           }`
         }
         style={marginButton}
