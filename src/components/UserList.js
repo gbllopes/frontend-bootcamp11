@@ -9,7 +9,7 @@ import {
     TableHead, 
     TableRow, 
     TableCell, 
-    TableBody, 
+    TableBody 
 } from "@material-ui/core";
 import { useManageProject, useProjects } from "../contexts/ProjectsContext";
 
