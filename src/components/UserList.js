@@ -1,14 +1,16 @@
 import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
-import { Table } from "@material-ui/core";
-import { TableContainer } from "@material-ui/core";
-import { Paper } from "@material-ui/core";
-import { TableHead } from "@material-ui/core";
-import { TableRow } from "@material-ui/core";
-import { TableCell } from "@material-ui/core";
-import { TableBody } from "@material-ui/core";
+import { 
+    Button,
+    Table, 
+    TableContainer, 
+    Paper, 
+    TableHead, 
+    TableRow, 
+    TableCell, 
+    TableBody, 
+} from "@material-ui/core";
 import { useManageProject, useProjects } from "../contexts/ProjectsContext";
 
 const UserList = ({ onChange }) => {
